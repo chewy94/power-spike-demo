@@ -1,21 +1,20 @@
 <template>
   <v-hover v-slot:default="{ hover }">
     <v-card outlined :disabled="todo.deleted && todo.deleted === true">
-      <div v-if="hover && todo.deleted !== true" class="todo-hover d-flex transition-fast-in-fast-out primary darken-1" style="height: 100%; cursor: pointer;" @click="removeTodo">
-        <!-- <v-btn color="error" v-text="'Remove TODO'" @click="removeTodo" /> -->
-        <span class="white--text">Completed?</span>
+      <div v-if="hover && todo.deleted !== true" class="todo-hover d-flex transition-fast-in-fast-out secondary" style="height: 100%; cursor: pointer;" @click="removeTodo">
+        <span class="primary--text title">Completed?</span>
       </div>
         <v-row align="center">
-          <v-col cols="auto" class="ml-3 pr-0" style="padding-left: 24px;">
+          <v-col cols="auto" class="pr-1" style="padding-left: 16px; margin-left: 12px;">
             <v-avatar :color="avatarColor" v-text="todo.title.charAt(0)" />
           </v-col>
           <v-col>
-            <v-card-title class="subtitle-2">
+            <v-card-title class="subtitle-2 pl-0">
               <span v-text="todo.title" />
               <v-spacer />
-              <span v-text="new Date(todo.created * 1000).toLocaleString()" />
+              <span class="caption" v-text="time" />
             </v-card-title>
-            <v-card-text v-text="todo.content" />
+            <v-card-text class="pl-0" v-text="todo.content" />
           </v-col>
         </v-row>
     </v-card>
@@ -39,6 +38,12 @@ export default {
     // Just a fun bit to generate a random color for the TODO avatar
     avatarColor () {
       return this.colors[Math.floor(Math.random() * 1000) % this.colors.length]
+    },
+    time () {
+      const type = this.todo.deleted ? 'Complete: ' : 'Created: '
+      const time = new Date(this.todo.deleted ? this.todo.completedTime * 1000 : this.todo.created * 1000).toLocaleString()
+
+      return type + time
     }
   },
   methods: {
