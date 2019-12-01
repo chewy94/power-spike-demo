@@ -16,6 +16,7 @@ class Api {
       return res.data.todos
     } catch (err) {
       console.error(err)
+      throw err
     }
   }
   async createTodo (todo) {
@@ -23,6 +24,7 @@ class Api {
       return this.axios.post('new', todo)
     } catch (err) {
       console.error(err)
+      throw err
     }
   }
   async deleteTodo (id) {
@@ -30,6 +32,7 @@ class Api {
       return this.axios.delete(`delete/${id}`)
     } catch (err) {
       console.error(err)
+      throw err
     }
   }
 }
