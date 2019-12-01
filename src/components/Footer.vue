@@ -1,6 +1,6 @@
 <template>
   <v-footer app color="primary">
-    <span class="caption white--text">{{ deletedTodos.length }}/{{ totalTodos }} Completed ({{ (deletedTodos.length / totalTodos * 100).toFixed(2) }}%)</span>
+    <span class="caption white--text">{{ deletedTodos.length }}/{{ totalTodos }} Completed ({{ percentDone.toFixed(2) }}%)</span>
   </v-footer>
 </template>
 
@@ -13,7 +13,12 @@ export default {
     totalTodos: 0
   }),
   computed: {
-    ...mapState(['todos'])
+    ...mapState(['todos']),
+    percentDone () {
+      const percent = this.deletedTodos.length / this.totalTodos * 100
+
+      return percent >= 0 ? percent : 0
+    }
   },
   watch: {
     todos: {
