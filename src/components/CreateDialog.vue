@@ -12,7 +12,7 @@
             placeholder="Please enter TODO title"
             filled
           />
-          <v-textarea
+          <v-text-field
             v-model="content"
             :rules="rules"
             label="Content"
