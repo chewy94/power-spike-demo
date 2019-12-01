@@ -17,11 +17,21 @@ export default new Vuex.Store({
       if (index > -1) {
         const removed = state.todos.splice(index, 1)
 
+        // Store removed todos in localStorage to improve user experience
+        // by allowing users to toggle showing completed todos
         let deleted = localStorage['deleted-todos']
         if (deleted) {
           deleted = JSON.parse(deleted)
-          deleted.push(removed[0])
-        } else deleted = removed
+          deleted.push({
+            ...removed[0],
+            completedTime: Math.floor(new Date().getTime() / 1000)
+          })
+        } else {
+          deleted = [{
+            ...removed[0],
+            completedTime: Math.floor(new Date().getTime() / 1000)
+          }]
+        }
 
         localStorage['deleted-todos'] = JSON.stringify(deleted)
       }
@@ -48,7 +58,7 @@ export default new Vuex.Store({
         })
       } else return new Error('New todo was not created')
     },
-    async deleteTodo ({ commit, state }, payload) {
+    async deleteTodo ({ commit }, payload) {
       const res = await api.deleteTodo(payload)
 
       if (res.status === 204) {
